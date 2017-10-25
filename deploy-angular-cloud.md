@@ -150,7 +150,8 @@ as App Service, Batch, Service Fabric, and others. Your DevOps team can manage
 the configuration of apps isolated from the configuration of the hosting
 environment.
 
-![Create Azure Container Registry](https://youtu.be/fGhhEQzeksI)
+<a href="https://youtu.be/fGhhEQzeksI" target="_blank"><img src="https://github.com/simonaco/deploy-angular-cloud/blob/master/CreateAzureContainerRegistry.png" 
+alt="Create Azure Container Registry" /></a>
 
 Edit *config.yml* to build and push docker images to ACR. Copy and paste the
 config bellow and replace *awesomeapp.azurecr.io *with your own Login Server
@@ -212,7 +213,8 @@ Containers](https://aka.ms/Bmrs81).
 is a fully managed compute platform that is optimized for hosting websites and
 web applications.
 
-![Create Azure Web App for Containers](https://youtu.be/x3f_NBzY7kY)
+<a href="https://youtu.be/x3f_NBzY7kY" target="_blank"><img src="https://github.com/simonaco/deploy-angular-cloud/blob/master/CreateAzureWebAppContainer.png" 
+alt="Create Azure Web App for Containers" /></a>
 
 Configure continuous deployment of your app using webhooks. The first thing you
 need to do is create a new Webhook. Open the portal and go to your new container
