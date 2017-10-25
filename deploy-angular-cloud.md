@@ -68,6 +68,8 @@ following the steps bellow.
 In the root of your project, create a folder named *.circleci* and add a file
 *config.yml*. Copy and paste the gist bellow in the new file.
 
+<script src="https://gist.github.com/simonaco/6069d5ae2be3f9944a5872a6ada6add6.js"></script>
+
 There’s a few key things happening here:
 
 1.  In CircleCI, a run is comprised of one or more named jobs. At the moment our
@@ -103,6 +105,7 @@ at [https://azure.microsoft.com/free](https://azure.microsoft.com/free).
 #### Build and push Docker image
 
 Create a new file named Dockerfile and save it in the root of your project.
+<script src="https://gist.github.com/simonaco/f32ecfdbabbc016efa60cb963b04dff8.js"></script>
 
 To store your docker images, open the Azure portal and create new [Azure
 Container Registry](https://aka.ms/Bbq47b) (ACR).
@@ -113,12 +116,13 @@ as App Service, Batch, Service Fabric, and others. Your DevOps team can manage
 the configuration of apps isolated from the configuration of the hosting
 environment.
 
-<span class="figcaption_hack">Create Azure Container Registry</span>
+[Create Azure Container Registry](https://youtu.be/fGhhEQzeksI)
 
 Edit *config.yml* to build and push docker images to ACR. Copy and paste the
 config bellow and replace *awesomeapp.azurecr.io *with your own Login Server
 value. You can find it on the Overview page of your new container registry.
 
+<script src="https://gist.github.com/simonaco/89fd1b6922675c7fb18a2b4b1af0609a.js"></script>
 <span class="figcaption_hack">Updated config.yml including docker config</span>
 
 To retrieve your container registry login details go to the Access Keys tab in
