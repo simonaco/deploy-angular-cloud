@@ -68,7 +68,34 @@ following the steps bellow.
 In the root of your project, create a folder named *.circleci* and add a file
 *config.yml*. Copy and paste the gist bellow in the new file.
 
-<script src="https://gist.github.com/simonaco/6069d5ae2be3f9944a5872a6ada6add6.js"></script>
+```
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn ng build --prod --build-optimizer --no-progress
+      - run: yarn ng test --single-run --no-progress
+```
 
 There’s a few key things happening here:
 
@@ -105,7 +132,14 @@ at [https://azure.microsoft.com/free](https://azure.microsoft.com/free).
 #### Build and push Docker image
 
 Create a new file named Dockerfile and save it in the root of your project.
-<script src="https://gist.github.com/simonaco/f32ecfdbabbc016efa60cb963b04dff8.js"></script>
+
+```
+FROM nginx:alpine
+LABEL author="Simona Cotin"
+COPY ./dist /usr/share/nginx/html
+EXPOSE 80 443
+ENTRYPOINT ["nginx","-g","daemon off;"]
+```
 
 To store your docker images, open the Azure portal and create new [Azure
 Container Registry](https://aka.ms/Bbq47b) (ACR).
@@ -116,13 +150,50 @@ as App Service, Batch, Service Fabric, and others. Your DevOps team can manage
 the configuration of apps isolated from the configuration of the hosting
 environment.
 
-[Create Azure Container Registry](https://youtu.be/fGhhEQzeksI)
+![Create Azure Container Registry](https://youtu.be/fGhhEQzeksI)
 
 Edit *config.yml* to build and push docker images to ACR. Copy and paste the
 config bellow and replace *awesomeapp.azurecr.io *with your own Login Server
 value. You can find it on the Overview page of your new container registry.
 
-<script src="https://gist.github.com/simonaco/89fd1b6922675c7fb18a2b4b1af0609a.js"></script>
+```
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:6-browsers
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn ng build --prod --build-optimizer --no-progress
+      - run: yarn ng test --single-run --no-progress
+      - run:
+          command: |
+            docker build -t awesomeapp.azurecr.io/angular-cli-nginx:1.0 .
+      - run:
+          command: |
+            docker login --username $DOCKER_USER --password $DOCKER_PASS awesomeapp.azurecr.io
+      - run:
+          command: |
+            docker push awesomeapp.azurecr.io/angular-cli-nginx:1.0
+```
 <span class="figcaption_hack">Updated config.yml including docker config</span>
 
 To retrieve your container registry login details go to the Access Keys tab in
@@ -141,7 +212,7 @@ Containers](https://aka.ms/Bmrs81).
 is a fully managed compute platform that is optimized for hosting websites and
 web applications.
 
-<span class="figcaption_hack">Create Azure Web App for Containers</span>
+![Create Azure Web App for Containers](https://youtu.be/x3f_NBzY7kY)
 
 Configure continuous deployment of your app using webhooks. The first thing you
 need to do is create a new Webhook. Open the portal and go to your new container
@@ -161,7 +232,7 @@ the portal, choose the awesome-app and click on the Application Settings link.
 On this page add a new variable called DOCKER_ENABLE_CI with the value true and
 then Save.
 
-<span class="figcaption_hack">Create webhook to continuously deploy your changes</span>
+![Create webhook to continuously deploy your changes](https://youtu.be/OgljPlsZPVQ)
 
 Push the updated config.yml file to GitHub to trigger a new build with the new
 changes. 
