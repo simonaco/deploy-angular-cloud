@@ -234,8 +234,8 @@ the portal, choose the awesome-app and click on the Application Settings link.
 On this page add a new variable called DOCKER_ENABLE_CI with the value true and
 then Save.
 
-<a href="https://youtu.be/OgljPlsZPVQ" target="_blank"><img src="https://github.com/simonaco/deploy-angular-cloud/blob/master/create-webhook.jpg" 
-alt="Create webhook to continuously deploy your changes" /></a>
+<a href="https://youtu.be/OgljPlsZPVQ" target="_blank"><img src="https://github.com/simonaco/deploy-angular-cloud/blob/master/CreateAzureWebhook.png" 
+alt="Create Azure Webhook" /></a>
 
 Push the updated config.yml file to GitHub to trigger a new build with the new
 changes. 
